@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>录入水电费</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取水表相关元素
+            const waterPrevious = 1234.5; // 上次水表读数
+            const waterCurrentInput = document.getElementById('water_current');
+            const waterUsageElement = document.querySelector('.water-usage');
+            const waterFeeElement = document.querySelector('.water-fee');
+            const waterRate = 4; // 水费单价：4元/吨
+            
+            // 获取电表相关元素
+            const electricityPrevious = 2345.6; // 上次电表读数
+            const electricityCurrentInput = document.getElementById('electricity_current');
+            const electricityUsageElement = document.querySelector('.electricity-usage');
+            const electricityFeeElement = document.querySelector('.electricity-fee');
+            const electricityRate = 0.7; // 电费单价：0.7元/度
+            
+            // 监听水表输入变化
+            waterCurrentInput.addEventListener('input', function() {
+                const currentReading = parseFloat(this.value) || 0;
+                if(currentReading > waterPrevious) {
+                    const usage = (currentReading - waterPrevious).toFixed(1);
+                    const fee = (usage * waterRate).toFixed(0);
+                    waterUsageElement.textContent = usage + ' 吨';
+                    waterFeeElement.textContent = '¥' + fee;
+                } else {
+                    waterUsageElement.textContent = '-- 吨';
+                    waterFeeElement.textContent = '¥--';
+                }
+            });
+            
+            // 监听电表输入变化
+            electricityCurrentInput.addEventListener('input', function() {
+                const currentReading = parseFloat(this.value) || 0;
+                if(currentReading > electricityPrevious) {
+                    const usage = (currentReading - electricityPrevious).toFixed(1);
+                    const fee = (usage * electricityRate).toFixed(0);
+                    electricityUsageElement.textContent = usage + ' 度';
+                    electricityFeeElement.textContent = '¥' + fee;
+                } else {
+                    electricityUsageElement.textContent = '-- 度';
+                    electricityFeeElement.textContent = '¥--';
+                }
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-md mx-auto bg-white min-h-screen pb-16">
+        <!-- 顶部导航 -->
+        <header class="bg-blue-600 text-white p-4 flex items-center">
+            <a href="property_detail.html" class="mr-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </a>
+            <h1 class="text-xl font-bold flex-1 text-center">录入水电费</h1>
+        </header>
+
+        <!-- 房间信息 -->
+        <div class="p-4 bg-white border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-800">A栋101室</h2>
+                <span class="text-sm text-gray-500">2023年6月</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">租户: 张三</p>
+        </div>
+
+        <!-- 表单 -->
+        <form class="p-4 space-y-6">
+            <!-- 水表读数 -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-medium text-gray-800">水表读数</h3>
+                <div class="bg-gray-50 p-4 rounded-lg space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">上次读数</label>
+                        <div class="text-lg text-gray-800">1234.5 吨</div>
+                    </div>
+                    <div>
+                        <label for="water_current" class="block text-sm font-medium text-gray-700 mb-1">本次读数</label>
+                        <div class="flex items-center">
+                            <input type="number" step="0.1" id="water_current" class="block w-full p-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg" placeholder="请输入本次水表读数">
+                            <span class="ml-2 text-gray-600">吨</span>
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-gray-200">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">用水量</span>
+                            <span class="font-medium text-gray-800 water-usage">-- 吨</span>
+                        </div>
+                        <div class="flex justify-between text-sm mt-1">
+                            <span class="text-gray-600">水费 (4元/吨)</span>
+                            <span class="font-medium text-gray-800 water-fee">¥--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 电表读数 -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-medium text-gray-800">电表读数</h3>
+                <div class="bg-gray-50 p-4 rounded-lg space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">上次读数</label>
+                        <div class="text-lg text-gray-800">2345.6 度</div>
+                    </div>
+                    <div>
+                        <label for="electricity_current" class="block text-sm font-medium text-gray-700 mb-1">本次读数</label>
+                        <div class="flex items-center">
+                            <input type="number" step="0.1" id="electricity_current" class="block w-full p-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg" placeholder="请输入本次电表读数">
+                            <span class="ml-2 text-gray-600">度</span>
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-gray-200">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">用电量</span>
+                            <span class="font-medium text-gray-800 electricity-usage">-- 度</span>
+                        </div>
+                        <div class="flex justify-between text-sm mt-1">
+                            <span class="text-gray-600">电费 (0.7元/度)</span>
+                            <span class="font-medium text-gray-800 electricity-fee">¥--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 备注 -->
+            <div class="space-y-2">
+                <label for="notes" class="block text-sm font-medium text-gray-700">备注</label>
+                <textarea id="notes" rows="3" class="block w-full p-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="可选填写备注信息"></textarea>
+            </div>
+
+            <!-- 提交按钮 -->
+            <button type="button" id="submit-btn" class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-medium text-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                确认提交
+            </button>
+            
+            <script>
+                // 提交按钮点击事件
+                document.getElementById('submit-btn').addEventListener('click', function() {
+                    const waterCurrent = document.getElementById('water_current').value;
+                    const electricityCurrent = document.getElementById('electricity_current').value;
+                    
+                    if(!waterCurrent || !electricityCurrent) {
+                        alert('请输入水表和电表读数');
+                        return;
+                    }
+                    
+                    // 在实际应用中，这里会提交数据到服务器
+                    // 这里仅做演示，显示提交成功消息
+                    alert('水电费录入成功！');
+                    // 跳转回房源详情页
+                    window.location.href = 'property_detail.html';
+                });
+            </script>
+        </form>
+    </div>
+</body>
+</html>
